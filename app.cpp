@@ -1,78 +1,74 @@
-#define _USE_MATH_DEFINES
-#include <cmath>
-#include <vector>
 #include <iostream>
+#include <cmath>
 #include <functional>
+#include <string>
 #include <emscripten.h>
+
+#define exprtk_disable_string_capabilities
+#define exprtk_disable_rtl_io_file
+#define exprtk_disable_rtl_vecops
+#include "exprtk.hpp" 
 
 using namespace std;
 
+EMSCRIPTEN_KEEPALIVE
+double calcularDerivada(function<double(double)> f, double x) {
+    double h = 1e-6;
+    return (f(x + h) - f(x - h)) / (2.0 * h);
+}
+
 extern "C" {
-    const double PI = M_PI;
+    EMSCRIPTEN_KEEPALIVE
+    double calcularRaizWeb(const char* ecuacion_cstr) {
+        string ecuacion(ecuacion_cstr);
+        
+        double variable_x;
+        exprtk::symbol_table<double> tabla_simbolos;
+        tabla_simbolos.add_variable("x", variable_x);
+        tabla_simbolos.add_constants();
 
-    double funcion(double valorX){
-        return ( PI * ( pow( valorX, 3 ) ) ) - 9 * (PI * ( pow( valorX, 2) ) ) + 90;
-    }
+        exprtk::expression<double> expresion;
+        expresion.register_symbol_table(tabla_simbolos);
 
-    double calcularFuncion(function<double(double)> f, double valorX){
-        return f(valorX);
-    }
+        exprtk::parser<double> analizador;
+        if (!analizador.compile(ecuacion, expresion)) {
+            return -9999.99;
+        }
 
-    double calcularDerivada(function<double(double)> f, double valorX){
-        double h = 1e-6;
-        return (f(valorX + h) - f(valorX - h)) / (2.0 * h);
-    }
-
-    double* calcularIntervalos() {
-        double paso = 0.5;	
-            
-        double imagen1, imagen2;
-        double a = -0.5;
-        double b = 0;
-        do{
-            a += paso;
-            b += paso;
-
-            imagen1 = calcularFuncion(funcion, a);
-            imagen2 = calcularFuncion(funcion, b);
-        } while( !((imagen1 * imagen2) < 0) || a == 100);
-            
-        double imagen3, imagen4;
-        double c = 0.5;
-        double d = 0;
-        do{
-            c -= paso;
-            d -= paso;
-
-            imagen3 = calcularFuncion(funcion, c);
-            imagen4 = calcularFuncion(funcion, d);
-        } while( !((imagen3 * imagen4) < 0) || c == -100);
-            
-        static double resultados[4];
-        resultados[0] = a;
-        resultados[1] = b;
-        resultados[2] = c;
-        resultados[3] = d;
-
-        return resultados;
-    }
-
-    double calcularRaicesNewtonRaphson(double x_inicial, function<double(double)> f){
-        float condicion, x_siguiente;
-        int iteracion = 1;
-        do{
-            float imagenDerivadaFuncion = calcularDerivada(f, x_inicial);
-            if (abs(imagenDerivadaFuncion) < 1e-10) {
-                break;
+        function<double(double)> f = [&](double valor_evaluar) {
+            variable_x = valor_evaluar; 
+            return expresion.value(); 
+        };
+        
+        double a = 0, b = 0.5;
+        while (f(a) * f(b) >= 0 && a < 100) {
+            a += 0.5;
+			b += 0.5;
+        }
+        
+        if (a >= 100) {
+            a = 0; b = -0.5;
+            while (f(a) * f(b) >= 0 && a > -100) {
+                a -= 0.5;
+				b -= 0.5;
             }
+        }
+        
+        double x_inicial = a;
+        double x_siguiente = 0;
+        double condicion = 0;
+        
+        do {
+            double imgDerivada = calcularDerivada(f, x_inicial);
+            if (abs(imgDerivada) < 1e-10) break;
             
-            float imagenFuncion = calcularFuncion(f, x_inicial);
-            x_siguiente = x_inicial - ( imagenFuncion / imagenDerivadaFuncion);
-            condicion = (abs(x_siguiente - x_inicial));
+            double imgFuncion = f(x_inicial);
+            x_siguiente = x_inicial - (imgFuncion / imgDerivada);
+            
+            condicion = abs(x_siguiente - x_inicial);
             x_inicial = x_siguiente;
-
-        } while(condicion != 0);
-
+        } while(condicion > 1e-7); 
+        
         return x_siguiente;
     }
 }
