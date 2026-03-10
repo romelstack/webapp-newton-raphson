@@ -16,7 +16,7 @@ body{
     display: grid;
     grid-template-columns: repeat(1fr, 5);
     justify-content: center;
-    width: 500px;
+    width: 100%;
     input[type="text"]{
         margin: 10px 0;
         border-radius: 10px;
@@ -25,7 +25,7 @@ body{
         font-size: 20px;
     }
     button{
-        background-color: #FF6d00;
+        background-color: blue;
         border: none;
         width: auto;
         height: 35px;
@@ -37,7 +37,7 @@ body{
         transition-duration: 200ms;
         &:hover{
             cursor: pointer;
-            background-color: #d45c00
+            background-color: darkblue;
         }
     }
     .resultado{
