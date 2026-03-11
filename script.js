@@ -25,23 +25,36 @@ document.addEventListener('DOMContentLoaded', function(){
                 resultadoAnterior = _resultadoJS_Fixed;
             }
         });
+        
+        let resultadoDisplayAnterior = document.querySelector('.resultado');
+        while(resultadoDisplayAnterior){
+            resultadoDisplayAnterior.remove();
+            resultadoDisplayAnterior = document.querySelector('.resultado');
+        }
 
-        resultadosFinal.forEach(_resultadoFinal => {
-            console.log(_resultadoFinal);
-            const resultadoDisplay = document.createElement('H2');
-            resultadoDisplay.textContent = _resultadoFinal;
-            contenedorInput.appendChild(resultadoDisplay);
-        });
 
-//        if(resultado === -9999.99){
-//            display.classList.remove('exito');
-//            display.classList.add('error');
-//            display.textContent = 'Error en la sintaxis de la ecuación.';
-//        } else {
-//            display.classList.remove('error');
-//            display.classList.add('exito');
-//            display.textContent = `Resultado: ${resultado.toFixed(5)}`;
-//        }
+        if(resultadosFinal[0]  == -9999.99000){
+            const errorDisplay = document.createElement('H2');
+            errorDisplay.classList.add('error');
+            errorDisplay.classList.add('resultado');
+            errorDisplay.textContent = 'Error en la sintaxis de la ecuación.';
+            contenedorInput.appendChild(errorDisplay);
+        } else {
+            const tituloResultado = document.createElement('H2');
+            tituloResultado.classList.add('exito');
+            tituloResultado.classList.add('resultado');
+            tituloResultado.textContent = 'Raíces encontradas:';
+            contenedorInput.appendChild(tituloResultado);
+    
+            resultadosFinal.forEach(_resultadoFinal => {
+                console.log(_resultadoFinal);
+                const resultadoDisplay = document.createElement('H2');
+                resultadoDisplay.classList.add('exito');
+                resultadoDisplay.classList.add('resultado');
+                resultadoDisplay.textContent = _resultadoFinal;
+                contenedorInput.appendChild(resultadoDisplay);
+            });
+        }
 
         resultados.delete();
     })
