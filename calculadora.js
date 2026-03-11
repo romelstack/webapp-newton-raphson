@@ -32,7 +32,7 @@ const display = document.querySelector('#input-ec');
     })
     botonMultiplicar = document.querySelector('#multiplicar');
     botonMultiplicar.addEventListener('click', function(){
-        display.value += '.';
+        display.value += '*';
     })
     botonParentesis = document.querySelector('#parentesis-cerrado');
     botonParentesis.addEventListener('click', function(){
