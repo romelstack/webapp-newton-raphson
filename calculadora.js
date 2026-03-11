@@ -20,7 +20,7 @@ const display = document.querySelector('#input-ec');
     })
     botonRaiz = document.querySelector('#raiz');
     botonRaiz.addEventListener('click', function(){
-        display.value += '√(';
+        display.value += 'sqrt(';
     })
     botonDEL = document.querySelector('#DEL');
     botonDEL.addEventListener('click', function(){
@@ -97,6 +97,6 @@ const display = document.querySelector('#input-ec');
     })
     botonComa = document.getElementById('coma');
     botonComa.addEventListener('click', function(){
-        display.value += ',';
+        display.value += '.';
     })
 
