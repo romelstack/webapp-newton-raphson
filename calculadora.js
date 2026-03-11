@@ -38,6 +38,10 @@ const display = document.querySelector('#input-ec');
     botonParentesis.addEventListener('click', function(){
         display.value += ')';
     })
+    botonX = document.querySelector('#x');
+    botonX.addEventListener('click', function(){
+        display.value += 'x';
+    })
     botonDivir = document.querySelector('#dividir');
     botonDivir.addEventListener('click', function(){
         display.value += '/';
