@@ -11,19 +11,20 @@ body{
     border-radius: 10px;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0px 4px 10px #000000;
     margin-top: 50px;
-    display: flex;
-    justify-content: space-between;
     width: min-content;
-    height: 350px;
+    height: min-content;
+    display: grid;
     @media(min-width: 768px){
         width: 700px;
+        display: flex;
+        justify-content: space-between;
     }
     .contenedor-input{
         width: 400px;
         input[type="text"]{
-            margin: 10px 0;
+            margin: 10px;
             border-radius: 10px;
             border: solid 2px #979797;
             height: 30px;
@@ -40,13 +41,13 @@ body{
             box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
         }
         .boton-calcular{
-            background-color: blue;
+            background-color: #0A02ED;
             transition-property: background-color;
             transition: 200ms;
             color: white;
-            margin-bottom: 10px;
+            margin: 10px 0;
             &:hover{
-                background-color: darkblue;
+                background-color: #08009C;
                 cursor: pointer;
             }
         }
@@ -56,16 +57,42 @@ body{
         .teclado{
             display: grid;
             grid-template-columns: repeat(5, 2fr);
+            #AC{
+                background-color: #ED3302;
+                color: #FFFFFF;
+                &:hover{
+                    background-color: #D13102;
+                    cursor: pointer;
+                }
+            }
+            #igual{
+                background-color: #0A02ED;
+                color: #FFFFFF;
+                &:hover{
+                    background-color: #08009C;
+                    cursor: pointer;
+                }
+            }
         }
     }
     .contenedor-resultado{
+        @media(min-width: 768px){
+            margin-bottom: 0;
+            width: auto;
+        }
         overflow-y: scroll;
+        border: solid 2px #e1e1e1;
+        margin: 10px 10px 0 10px;
+        border-radius: 10px;
+        height: 345.6px;
+        padding: 0 10px;
         .resultado{
+            margin: 10px 0;
             &.error{
-                color: red;
+                color: #ED3302;
             }
             &.exito{
-                color: green;
+                color: #02D92A;
             }
         }
     }
