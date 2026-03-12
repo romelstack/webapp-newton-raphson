@@ -11,7 +11,7 @@ body{
     border-radius: 10px;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    box-shadow: 0px 4px 10px #000000;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     margin-top: 50px;
     width: min-content;
     height: min-content;
@@ -22,19 +22,27 @@ body{
         justify-content: space-between;
     }
     .contenedor-input{
-        width: 400px;
+        width: 350px;
         input[type="text"]{
-            margin: 10px;
+            display: inline-block;
+            margin: 10px 5px;
             border-radius: 10px;
             border: solid 2px #979797;
             height: 30px;
             font-size: 20px;
+            width: 70%;
+        }
+        @media(min-width: 768px){
+            width: 450px;
+        }
+        .contenedor-ec{
+            display: flex;
+            justify-content: space-between;
         }
         button{
             border: none;
             width: auto;
             height: 35px;
-            margin: 10 0;
             border-radius: 10px;
             font-weight: bold;
             font-size: 20px;
@@ -45,7 +53,7 @@ body{
             transition-property: background-color;
             transition: 200ms;
             color: white;
-            margin: 10px 0;
+            margin: 10px 5px;
             &:hover{
                 background-color: #08009C;
                 cursor: pointer;
@@ -76,16 +84,17 @@ body{
         }
     }
     .contenedor-resultado{
-        @media(min-width: 768px){
-            margin-bottom: 0;
-            width: auto;
-        }
         overflow-y: scroll;
         border: solid 2px #e1e1e1;
-        margin: 10px 10px 0 10px;
+        margin: 10px 5px 5px 5px;
         border-radius: 10px;
         height: 345.6px;
+        width: auto;
         padding: 0 10px;
+        @media(min-width: 768px){
+            height: auto;
+            width: 258px;
+        }
         .resultado{
             margin: 10px 0;
             &.error{
