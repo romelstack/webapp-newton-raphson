@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 function calcularResultado(){
     const ecuacion = document.querySelector('#input-ec').value;
-    console.log(ecuacion);
     const resultados = Module.calcularRaizWeb(ecuacion);
 
     let resultadosJS = [];
@@ -27,11 +26,9 @@ function calcularResultado(){
     });
 
     let resultadosFinal = [];
-    let resultadoAnterior = '-';
     resultadosJS_Fixed.forEach(_resultadoJS_Fixed => {
-        if(resultadoAnterior != _resultadoJS_Fixed){
+        if(!(resultadosFinal.includes(_resultadoJS_Fixed)) && _resultadoJS_Fixed != '-0.00000'){
             resultadosFinal.push(_resultadoJS_Fixed);
-            resultadoAnterior = _resultadoJS_Fixed;
         }
     });
     
@@ -56,7 +53,6 @@ function calcularResultado(){
         contenedorResultado.appendChild(tituloResultado);
 
         resultadosFinal.forEach(_resultadoFinal => {
-            console.log(_resultadoFinal);
             const resultadoDisplay = document.createElement('H2');
             resultadoDisplay.classList.add('exito');
             resultadoDisplay.classList.add('resultado');
