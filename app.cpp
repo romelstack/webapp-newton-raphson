@@ -44,13 +44,25 @@ vector<double> calcularRaizWeb(string ecuacion_cstr) {
     };
     
     vector<double> intercepciones;
-    double a = 0, b = 0.5;
-    while (a < 100) {
-        a += 0.5;
-        b += 0.5;
-        if(f(a) * f(b) >= 0){
+
+    double a = -100, b = -99.5;
+    while (a < 0) {
+        double fa = f(a), fb = f(b);
+        if(std::isfinite(fa) && std::isfinite(fb) && fa * fb < 0){
             intercepciones.push_back(a);
         }
+        a += 0.5;
+        b += 0.5;
+    }
+
+    a = 0; b = 0.5;
+    while (a < 100) {
+        double fa = f(a), fb = f(b);
+        if(std::isfinite(fa) && std::isfinite(fb) && fa * fb < 0){
+            intercepciones.push_back(a);
+        }
+        a += 0.5;
+        b += 0.5;
     }
     
     double x_inicial = a;
@@ -59,18 +71,34 @@ vector<double> calcularRaizWeb(string ecuacion_cstr) {
     
     vector<double> resultados;
     for(double valor : intercepciones){
-        x_inicial = valor;        
+        x_inicial = valor;
+        int iteraciones = 0;
+        bool valido = true;
         do {
+            if (!std::isfinite(x_inicial)) { valido = false; break; }
+
             double imgDerivada = calcularDerivada(f, x_inicial);
             if (abs(imgDerivada) < 1e-10) break;
             
             double imgFuncion = f(x_inicial);
+            if (!std::isfinite(imgFuncion)) { valido = false; break; }
+
             x_siguiente = x_inicial - (imgFuncion / imgDerivada);
+
+            if (!std::isfinite(x_siguiente)) { valido = false; break; }
             
             condicion = abs(x_siguiente - x_inicial);
             x_inicial = x_siguiente;
-        } while(condicion > 1e-7);
-        resultados.push_back(x_siguiente);
+            iteraciones++;
+        } while(condicion > 1e-7 && iteraciones < 1000);
+
+        if (valido && std::isfinite(x_siguiente) && abs(f(x_siguiente)) < 1e-4) {
+            resultados.push_back(x_siguiente);
+        }
+    }
+
+    if (resultados.empty()) {
+        resultados.push_back(-8888.88);
     }
     return resultados;
 }

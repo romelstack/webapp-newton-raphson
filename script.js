@@ -45,6 +45,12 @@ function calcularResultado(){
         errorDisplay.classList.add('resultado');
         errorDisplay.textContent = 'Error en la sintaxis de la ecuación.';
         contenedorResultado.appendChild(errorDisplay);
+    } else if(resultadosFinal[0] == -8888.88000 || resultadosFinal.length === 0){
+        const sinRaicesDisplay = document.createElement('H2');
+        sinRaicesDisplay.classList.add('error');
+        sinRaicesDisplay.classList.add('resultado');
+        sinRaicesDisplay.textContent = 'La función no tiene raíces reales en el rango evaluado.';
+        contenedorResultado.appendChild(sinRaicesDisplay);
     } else {
         const tituloResultado = document.createElement('H2');
         tituloResultado.classList.add('exito');
